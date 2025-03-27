@@ -33,7 +33,7 @@ class FetchCidadesJob implements ShouldQueue
         $token = $client->authenticate();
 
         if (!$token) {
-            Log::error('FetchCitiesJob: Falha ao autenticar no ERP');
+            Log::error('FetchCidadesJob: Falha ao autenticar no ERP');
             return;
         }
 

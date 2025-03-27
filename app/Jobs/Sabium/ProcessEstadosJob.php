@@ -3,6 +3,7 @@
 namespace App\Jobs\Sabium;
 
 use App\Models\Sabium\Estado;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -58,7 +59,7 @@ class ProcessEstadosJob implements ShouldQueue
 
             Log::info('Estado salvo no banco: ' . $this->estado['nome']);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Erro ao processar estado: ' . $e->getMessage());
         }
     }

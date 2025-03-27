@@ -7,29 +7,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Estado extends Model
+class Empresa extends Model
 {
     use HasSlug, SoftDeletes;
 
-    protected $table = 'estados';
-
+    protected $table = 'empresas';
     protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'int';
 
     protected $fillable = [
-        'uf',
-        'nome',
-        'codigo_ibge',
+        'id',
+        'razao_social',
+        'fantasia',
+        'nome_sistema',
+        'nome_label',
         'slug',
-        'timezone',
     ];
 
-    /**
-     * Configuração do Slug: gera a partir de 'nome' e salva em 'slug'
-     */
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('nome')
+            ->generateSlugsFrom('fantasia')
             ->saveSlugsTo('slug')
             ->doNotGenerateSlugsOnUpdate();
     }

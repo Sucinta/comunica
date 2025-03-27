@@ -31,6 +31,7 @@ class Cidade extends Model
     {
         return SlugOptions::create()
             ->generateSlugsFrom('nome')
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
     }
 }
