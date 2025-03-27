@@ -1,14 +1,37 @@
-/.phpunit.cache
+# Diretórios do Laravel que não precisam ser versionados
+/vendor
 /node_modules
+/bootstrap/cache
+/storage
+/storage/logs
+/storage/framework
+
+# Arquivos sensíveis
+.env
+.env.local
+.env.testing
+.env.production
+
+# Arquivos do Laravel Sail (Docker)
+sail
+docker-compose.yml
+docker-compose.override.yml
+
+# Arquivos IDE
+.idea/
+.vscode/
+  447  git checkout main
+  448  git pull origin main
+  449  git checkout -b develop
+
+# outros padrao
+/.phpunit.cache
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
-.env
 .env.backup
-.env.production
 .phpactor.json
 .phpunit.result.cache
 Homestead.json

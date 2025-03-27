@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'sabium' => [
+        'url' => env('SABIUM_BASE_URL'),
+        'usuario' => env('SABIUM_USER'),
+        'senha' => env('SABIUM_PASSWORD'),
+    ],
+
 ];
