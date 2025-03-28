@@ -45,7 +45,7 @@ class ProcessEstadosJob implements ShouldQueue
              */
                 [
                     'uf' => $this->estado['uf'],
-                    'codigo_ibge' => $this->estado['idibge']
+                    'codigo_ibge' => $this->estado['codigo_ibge']
                 ],
 
                 /*
@@ -53,7 +53,7 @@ class ProcessEstadosJob implements ShouldQueue
                  */
                 [
                     'nome' => $this->estado['nome'],
-                    'timezone' => $this->estado['idtimezone']
+                    'timezone' => $this->estado['timezone']
                 ]
             );
 

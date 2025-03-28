@@ -58,15 +58,15 @@ class ProcessCidadesJob implements ShouldQueue
             /*
              * Chave única de referência
              */
-                ['codigo_ibge' => $this->cidade['idibge']],
+                ['codigo_ibge' => $this->cidade['codigo_ibge']],
 
                 /*
                  * Campos atualização
                  */
                 [
                     'estado_id' => $estado->id,
-                    'sabium_id' => $this->cidade['idcidade'],
-                    'nome' => $this->cidade['cidade'],
+                    'sabium_id' => $this->cidade['sabium_id'],
+                    'nome' => $this->cidade['nome'],
                     'timezone' => $this->cidade['timezone'] ?? $estado->timezone, // herda se não vier
                 ]
             );

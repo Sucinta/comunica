@@ -1,0 +1,190 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex fe6db08..3f2e8fd 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -12,6 +12,55 @@[m [m## 🧱 Estrutura de Branches[m
+ [m
+ ---[m
+ [m
+[32m+[m[32m## 🗂️ Estrutura de Branches[m
+[32m+[m
+[32m+[m[32mEste projeto utiliza uma estrutura de branches simples e organizada para facilitar o desenvolvimento:[m
+[32m+[m
+[32m+[m[32m| Branch            | Finalidade                                                                 |[m
+[32m+[m[32m|-------------------|----------------------------------------------------------------------------|[m
+[32m+[m[32m| `main`            | Branch principal. Contém o código em produção. Apenas versões testadas e estáveis são enviadas para cá. |[m
+[32m+[m[32m| `develop`         | Branch de desenvolvimento contínuo. Todas as novas funcionalidades são integradas aqui antes de irem para produção. |[m
+[32m+[m[32m| `feature/sabium`  | Branch dedicada às integrações com o ERP Sabium. Todas as funcionalidades relacionadas a esse sistema ficam concentradas aqui. |[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## 🔄 Fluxo de Trabalho com o ERP Sabium[m
+[32m+[m
+[32m+[m[32m1. Todas as funcionalidades relacionadas ao ERP Sabium são desenvolvidas dentro da branch `feature/sabium`.[m
+[32m+[m[32m2. Cada commit segue o padrão [Conventional Commits](https://www.conventionalcommits.org/).[m
+[32m+[m[32m3. Ao finalizar um conjunto de tarefas, é criado um **pull request com opção _squash_** para a branch `develop`.[m
+[32m+[m[32m4. Após testes e validação, a branch `develop` pode ser integrada à `main` para produção.[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m## ✅ Padrão de Commits[m
+[32m+[m
+[32m+[m[32mEste projeto segue o padrão [Conventional Commits](https://www.conventionalcommits.org/), que padroniza as mensagens de commit e facilita o entendimento do histórico.[m
+[32m+[m
+[32m+[m[32m| Tipo        | Descrição                                                                 |[m
+[32m+[m[32m|-------------|--------------------------------------------------------------------------|[m
+[32m+[m[32m| `feat`      | Nova funcionalidade adicionada ao sistema                                |[m
+[32m+[m[32m| `fix`       | Correção de bugs                                                         |[m
+[32m+[m[32m| `docs`      | Alterações na documentação (ex: README, comentários)                     |[m
+[32m+[m[32m| `style`     | Alterações visuais no código (espaços, identação, ponto e vírgula)       |[m
+[32m+[m[32m| `refactor`  | Refatoração de código sem alteração de comportamento                     |[m
+[32m+[m[32m| `perf`      | Melhorias de performance                                                 |[m
+[32m+[m[32m| `test`      | Adição ou alteração de testes                                            |[m
+[32m+[m[32m| `chore`     | Tarefas técnicas ou de manutenção (builds, configs, dependências)        |[m
+[32m+[m[32m| `revert`    | Reversão de um commit anterior                                           |[m
+[32m+[m[32m| `ci`        | Alterações em configurações de integração contínua (GitHub Actions, etc) |[m
+[32m+[m[32m| `build`     | Alterações que afetam o processo de build (ex: Webpack, Composer, etc)   |[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+[32m+[m[32m### ✍️ Exemplo de Commit:[m
+[32m+[m
+[32m+[m[32m```bash[m
+[32m+[m[32mgit commit -m "feat: sincroniza empresas com ERP Sabium"[m
+[32m+[m[32m```[m
+[32m+[m
+[32m+[m[32m---[m
+[32m+[m
+ ## 🛠️ Criar uma funcionalidade[m
+ [m
+ ```bash[m
+[1mdiff --git a/app/Jobs/Sabium/FetchDadosApoioJob.php b/app/Jobs/Sabium/FetchDadosApoioJob.php[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e43137a[m
+[1m--- /dev/null[m
+[1m+++ b/app/Jobs/Sabium/FetchDadosApoioJob.php[m
+[36m@@ -0,0 +1,97 @@[m
+[32m+[m[32m<?php[m
+[32m+[m
+[32m+[m[32mnamespace App\Jobs\Sabium;[m
+[32m+[m
+[32m+[m[32muse App\Clients\Sabium\AuthClient;[m
+[32m+[m[32muse Exception;[m
+[32m+[m[32muse Illuminate\Contracts\Queue\ShouldQueue;[m
+[32m+[m[32muse Illuminate\Foundation\Bus\Dispatchable;[m
+[32m+[m[32muse Illuminate\Foundation\Queue\Queueable;[m
+[32m+[m[32muse Illuminate\Http\Client\ConnectionException;[m
+[32m+[m[32muse Illuminate\Queue\InteractsWithQueue;[m
+[32m+[m[32muse Illuminate\Queue\SerializesModels;[m
+[32m+[m[32muse Illuminate\Support\Facades\Http;[m
+[32m+[m[32muse Illuminate\Support\Facades\Log;[m
+[32m+[m[32muse Illuminate\Support\Str;[m
+[32m+[m
+[32m+[m[32mclass FetchDadosApoioJob implements ShouldQueue[m
+[32m+[m[32m{[m
+[32m+[m[32m    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Create a new job instance.[m
+[32m+[m[32m     */[m
+[32m+[m[32m    public function __construct() {}[m
+[32m+[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * Execute the job.[m
+[32m+[m[32m     * @throws ConnectionException[m
+[32m+[m[32m     */[m
+[32m+[m[32m    public function handle(): void[m
+[32m+[m[32m    {[m
+[32m+[m[32m        $client = new AuthClient();[m
+[32m+[m[32m        $token = $client->authenticate();[m
+[32m+[m
+[32m+[m[32m        if (!$token) {[m
+[32m+[m[32m            Log::error('[FetchDadosApoioJob] Falha ao autenticar no ERP');[m
+[32m+[m[32m            return;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        $url = config('services.sabium.url') . '/v3/executar_filtro';[m
+[32m+[m
+[32m+[m[32m        try {[m
+[32m+[m[32m            Log::info('[FetchDadosApoioJob] Buscando dados na API do ERP...');[m
+[32m+[m
+[32m+[m[32m            $response = Http::withHeaders([[m
+[32m+[m[32m                'pragma' => "dssession={$token}",[m
+[32m+[m[32m                'Accept' => 'application/json'[m
+[32m+[m[32m            ])->post($url, [[m
+[32m+[m[32m                'idfiltro' => 99103,[m
+[32m+[m[32m                'idcontexto' => 2,[m
+[32m+[m[32m                'parametros' => [][m
+[32m+[m[32m            ]);[m
+[32m+[m
+[32m+[m[32m            $dados = json_decode($response->body(), true);[m
+[32m+[m
+[32m+[m[32m            if (!is_array($dados['retorno'])) {[m
+[32m+[m[32m                Log::error('[FetchDadosApoioJob] API não retornou um array válido.', ['response' => $response->body()]);[m
+[32m+[m[32m                return;[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            foreach ($dados['retorno'] as $item) {[m
+[32m+[m
+[32m+[m[32m                $tabela = $item['tabela'] ?? null;[m
+[32m+[m[32m                $dadosJson = $item['dados'] ?? null;[m
+[32m+[m
+[32m+[m[32m                if (!$tabela || !$dadosJson) {[m
+[32m+[m[32m                    Log::warning('[FetchDadosApoioJob] Item inválido em retorno do ERP.', ['item' => $item]);[m
+[32m+[m[32m                    continue;[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                $registro = json_decode($dadosJson, true);[m
+[32m+[m
+[32m+[m[32m                if (json_last_error() !== JSON_ERROR_NONE) {[m
+[32m+[m[32m                    Log::error("[FetchDadosApoioJob] Erro ao decodificar JSON da tabela '{$tabela}': " . json_last_error_msg());[m
+[32m+[m[32m                    continue;[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                /*[m
+[32m+[m[32m                 * Geração dinâmica do nome do Job[m
+[32m+[m[32m                 */[m
+[32m+[m[32m                $jobClass = $item['job'] ?? '\App\Jobs\Sabium\Process' . Str::studly(Str::singular($tabela)) . 'Job';[m
+[32m+[m
+[32m+[m[32m                if (!class_exists($jobClass)) {[m
+[32m+[m[32m                    Log::info("[FetchDadosApoioJob] Job não encontrado para: {$jobClass} ({$tabela})");[m
+[32m+[m[32m                    continue;[m
+[32m+[m[32m                }[m
+[32m+[m
+[32m+[m[32m                dispatch(new  $jobClass($registro))->onQueue('sabium');[m
+[32m+[m[32m            }[m
+[32m+[m
+[32m+[m[32m            Log::info('[FetchDadosApoioJob] Dados de Apoio enviadas para a fila com sucesso.');[m
+[32m+[m
+[32m+[m[32m        } catch (Exception $e) {[m
+[32m+[m[32m            Log::error('[FetchDadosApoioJob] Erro ao buscar dados de apoio: ' . $e->getMessage());[m
+[32m+[m[32m        }[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/routes/console.php b/routes/console.php[m
+[1mindex f3bcc0c..efb0b7c 100644[m
+[1m--- a/routes/console.php[m
+[1m+++ b/routes/console.php[m
+[36m@@ -17,3 +17,6 @@[m
+ [m
+ //Schedule::job(new \App\Jobs\Sabium\FetchEmpresasJob())[m
+ //    ->everyMinute(); // ← Enviado para a fila "default" por padrão[m
+[32m+[m
+[32m+[m[32mSchedule::job(new \App\Jobs\Sabium\FetchDadosApoioJob())[m
+[32m+[m[32m    ->everyMinute(); // ← Enviado para a fila "default" por padrão[m
+[1mdiff --git a/routes/web.php b/routes/web.php[m
+[1mindex 86a06c5..bc81484 100644[m
+[1m--- a/routes/web.php[m
+[1m+++ b/routes/web.php[m
+[36m@@ -5,3 +5,11 @@[m
+ Route::get('/', function () {[m
+     return view('welcome');[m
+ });[m
+[32m+[m
+[32m+[m
+[32m+[m[32mRoute::get('/test', function () {[m
+[32m+[m
+[32m+[m[32m    $job = new \App\Jobs\Sabium\FetchDadosApoioJob();[m
+[32m+[m[32m    $job->handle(); // executa a lógica[m
+[32m+[m[32m    return 'Job executado manualmente';[m
+[32m+[m[32m});[m
