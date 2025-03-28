@@ -17,3 +17,6 @@ Artisan::command('inspire', function () {
 
 //Schedule::job(new \App\Jobs\Sabium\FetchEmpresasJob())
 //    ->everyMinute(); // ← Enviado para a fila "default" por padrão
+
+Schedule::job(new \App\Jobs\Sabium\FetchDadosApoioJob())
+    ->everyMinute(); // ← Enviado para a fila "default" por padrão

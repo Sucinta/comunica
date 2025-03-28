@@ -12,6 +12,55 @@
 
 ---
 
+## 🗂️ Estrutura de Branches
+
+Este projeto utiliza uma estrutura de branches simples e organizada para facilitar o desenvolvimento:
+
+| Branch            | Finalidade                                                                 |
+|-------------------|----------------------------------------------------------------------------|
+| `main`            | Branch principal. Contém o código em produção. Apenas versões testadas e estáveis são enviadas para cá. |
+| `develop`         | Branch de desenvolvimento contínuo. Todas as novas funcionalidades são integradas aqui antes de irem para produção. |
+| `feature/sabium`  | Branch dedicada às integrações com o ERP Sabium. Todas as funcionalidades relacionadas a esse sistema ficam concentradas aqui. |
+
+---
+
+## 🔄 Fluxo de Trabalho com o ERP Sabium
+
+1. Todas as funcionalidades relacionadas ao ERP Sabium são desenvolvidas dentro da branch `feature/sabium`.
+2. Cada commit segue o padrão [Conventional Commits](https://www.conventionalcommits.org/).
+3. Ao finalizar um conjunto de tarefas, é criado um **pull request com opção _squash_** para a branch `develop`.
+4. Após testes e validação, a branch `develop` pode ser integrada à `main` para produção.
+
+---
+
+## ✅ Padrão de Commits
+
+Este projeto segue o padrão [Conventional Commits](https://www.conventionalcommits.org/), que padroniza as mensagens de commit e facilita o entendimento do histórico.
+
+| Tipo        | Descrição                                                                 |
+|-------------|--------------------------------------------------------------------------|
+| `feat`      | Nova funcionalidade adicionada ao sistema                                |
+| `fix`       | Correção de bugs                                                         |
+| `docs`      | Alterações na documentação (ex: README, comentários)                     |
+| `style`     | Alterações visuais no código (espaços, identação, ponto e vírgula)       |
+| `refactor`  | Refatoração de código sem alteração de comportamento                     |
+| `perf`      | Melhorias de performance                                                 |
+| `test`      | Adição ou alteração de testes                                            |
+| `chore`     | Tarefas técnicas ou de manutenção (builds, configs, dependências)        |
+| `revert`    | Reversão de um commit anterior                                           |
+| `ci`        | Alterações em configurações de integração contínua (GitHub Actions, etc) |
+| `build`     | Alterações que afetam o processo de build (ex: Webpack, Composer, etc)   |
+
+---
+
+### ✍️ Exemplo de Commit:
+
+```bash
+git commit -m "feat: sincroniza empresas com ERP Sabium"
+```
+
+---
+
 ## 🛠️ Criar uma funcionalidade
 
 ```bash
